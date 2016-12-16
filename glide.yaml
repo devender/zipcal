@@ -1,2 +1,5 @@
 package: .
-import: []
+import:
+- package: github.com/Sirupsen/logrus
+  version: 0.11.0
+  repo: git@github.com:Sirupsen/logrus.git
