@@ -5,13 +5,15 @@ import (
 	"io"
 	"os"
 	"encoding/csv"
+	"strconv"
+	"github.com/devender/zipcal/location"
 )
 
 type Starbucks struct {
 	Source string
 }
 
-func (s *Starbucks) Load() []Location {
+func (s *Starbucks) Load() []location.Location {
 	log.Debugf("reading from %s", s.Source)
 
 	f, err := os.Open(s.Source)
@@ -24,7 +26,7 @@ func (s *Starbucks) Load() []Location {
 
 	r := csv.NewReader(f)
 
-	locations := make([]Location, 1000)
+	locations := make([]location.Location, 1000)
 
 	for {
 		r, err := r.Read()
@@ -36,10 +38,26 @@ func (s *Starbucks) Load() []Location {
 			log.Fatal(err)
 		}
 
-		locations = append(locations, Location{
-			Name: r[1], PhoneNumber: r[4], Address1: r[7], Address2: r[8], Address3: r[9], City: r[10],
-			Country: r[12], PostalCode: r[13], Latitude: r[15], Longitude: r[16],
-		})
+		latitude, err1 := strconv.ParseFloat(r[15], 64)
+		longitude, err2 := strconv.ParseFloat(r[16], 64)
+
+		if err1 == nil && err2 == nil {
+			locations = append(locations, location.Location{
+				Name: r[1],
+				PhoneNumber: r[4],
+				Address1: r[7],
+				Address2: r[8],
+				Address3: r[9],
+				City: r[10],
+				Country: r[12],
+				PostalCode: r[13],
+				Point: location.Point{
+					Longitude: longitude,
+					Latitude: latitude,
+
+				},
+			})
+		}
 
 	}
 

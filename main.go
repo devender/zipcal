@@ -4,6 +4,7 @@ import (
 	"os"
 	log "github.com/Sirupsen/logrus"
 	"github.com/devender/zipcal/loader"
+	"github.com/devender/zipcal/location"
 )
 
 func init() {
@@ -14,14 +15,18 @@ func main() {
 	os.Exit(realMain())
 }
 
-func realMain() int {
+func loadStarbucksLocations() []location.Location {
 	sb := loader.Starbucks{Source: "/Users/dgollapally/Downloads/data/starbucks.csv"}
+	return sb.Load()
+}
 
-	locations := sb.Load()
+func realMain() int {
 
-	for _,loc := range locations {
+	sbLocations := loadStarbucksLocations()
+	for _, loc := range sbLocations {
 		log.Debug(loc)
 	}
+
 	return 0
 }
 
