@@ -12,12 +12,12 @@ func TestHaverSineDistance(t *testing.T) {
 		Latitude: 34.271988,
 	}
 
-	office := Point {
+	office := Point{
 		Longitude: -118.492862,
 		Latitude: 34.158232,
 	}
 
-	dist := HaverSineDistance(home, office)
+	dist := home.HaverSineDistance(office)
 
 	fmt.Printf("distance in miles %f", dist)
 }
