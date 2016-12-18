@@ -5,6 +5,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/devender/zipcal/loader"
 	"github.com/devender/zipcal/location"
+	"fmt"
 )
 
 func init() {
@@ -23,8 +24,16 @@ func loadStarbucksLocations() []location.Location {
 func realMain() int {
 
 	sbLocations := loadStarbucksLocations()
-	for _, loc := range sbLocations {
-		log.Debug(loc)
+
+	home := location.Point{
+		Longitude: -118.795078,
+		Latitude: 34.271988,
+	}
+
+	filt := location.FilterByDistanceFromPoint(home, 10, sbLocations)
+
+	for _, a := range filt {
+		fmt.Printf("%v\n", a)
 	}
 
 	return 0

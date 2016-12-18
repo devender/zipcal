@@ -41,7 +41,7 @@ func (s *Starbucks) Load() []location.Location {
 		latitude, err1 := strconv.ParseFloat(r[15], 64)
 		longitude, err2 := strconv.ParseFloat(r[16], 64)
 
-		if err1 == nil && err2 == nil {
+		if err1 == nil && err2 == nil && latitude != 0 && longitude != 0 {
 			locations = append(locations, location.Location{
 				Name: r[1],
 				PhoneNumber: r[4],
@@ -52,13 +52,12 @@ func (s *Starbucks) Load() []location.Location {
 				Country: r[12],
 				PostalCode: r[13],
 				Point: location.Point{
-					Longitude: longitude,
-					Latitude: latitude,
+					Longitude: location.Angle(longitude),
+					Latitude: location.Angle(latitude),
 
 				},
 			})
 		}
-
 	}
 
 	return locations

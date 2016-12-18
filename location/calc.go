@@ -37,3 +37,15 @@ func HaverSineDistance(p1 Point, p2 Point) float64 {
 
 	return EARTH_RADIUS * c
 }
+
+func FilterByDistanceFromPoint(p Point, dist float64, locations []Location) []Location {
+
+	filteredLocs := make([]Location, 0)
+
+	for _, loc := range locations {
+		if HaverSineDistance(p, loc.Point) <= dist {
+			filteredLocs = append(filteredLocs, loc)
+		}
+	}
+	return filteredLocs
+}
