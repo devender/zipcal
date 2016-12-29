@@ -2,6 +2,8 @@ package location
 
 import (
 	"math"
+	"fmt"
+	"strings"
 )
 
 const (
@@ -27,9 +29,31 @@ type Location struct {
 	Address2    string
 	Address3    string
 	City        string
+	SubDivision string
 	Country     string
 	PostalCode  string
+	Brand       string
 	Point
+}
+
+func (l *Location) String() string {
+	return fmt.Sprintf("{ name=%s, brand=%s, address1=%s, address2=%s, " +
+		"city=%s, state=%s, postal=%s, country=%s, phone=%s, lat=%v, log=%v}",
+		l.Name, l.Brand, l.Address1, l.Address2, l.City, l.SubDivision, l.PostalCode, l.Country,
+		l.PhoneNumber,
+		l.Point.Latitude, l.Point.Longitude)
+}
+
+func (l *Location) Sql() string {
+	return fmt.Sprintf("('%s', '%s', '%s', '%s', " +
+		"'%s', '%s', '%s', '%s', '%s', %v, %v, '[\"test\", \"test1\" ]' ),",
+		escape(l.Name), l.Brand, escape(l.Address1), escape(l.Address2), escape(l.City), l.SubDivision, l.PostalCode, l.Country,
+		l.PhoneNumber,
+		l.Point.Latitude, l.Point.Longitude)
+}
+
+func escape(s string) string {
+	return strings.Replace(s, "'", "\\'",-1)
 }
 
 func (p1 Point) HaverSineDistance(p2 Point) float64 {

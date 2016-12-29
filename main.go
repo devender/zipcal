@@ -25,6 +25,7 @@ func realMain() int {
 
 	sbLocations := loadStarbucksLocations()
 
+	/*
 	home := location.Point{
 		Longitude: -118.795078,
 		Latitude: 34.271988,
@@ -34,6 +35,12 @@ func realMain() int {
 
 	for _, a := range filt {
 		fmt.Printf("%v\n", a)
+	}
+	*/
+	for _, loc := range sbLocations {
+		if loc.Country == "US" {
+			fmt.Println(loc.Sql())
+		}
 	}
 
 	return 0

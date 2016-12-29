@@ -44,11 +44,13 @@ func (s *Starbucks) Load() []location.Location {
 		if err1 == nil && err2 == nil && latitude != 0 && longitude != 0 {
 			locations = append(locations, location.Location{
 				Name: r[1],
+				Brand: r[2],
 				PhoneNumber: r[4],
 				Address1: r[7],
 				Address2: r[8],
 				Address3: r[9],
 				City: r[10],
+				SubDivision: r[11],
 				Country: r[12],
 				PostalCode: r[13],
 				Point: location.Point{
