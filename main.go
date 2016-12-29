@@ -6,6 +6,7 @@ import (
 	"github.com/devender/zipcal/loader"
 	"github.com/devender/zipcal/location"
 	"fmt"
+	"bytes"
 )
 
 func init() {
@@ -37,12 +38,16 @@ func realMain() int {
 		fmt.Printf("%v\n", a)
 	}
 	*/
+	var b bytes.Buffer
+	fmt.Fprintf(&b, "INSERT INTO insikt.geolocation_location (name,brand,address1,address2,city,state,postal_code,country,phone_no,latitude,longitude,tags) VALUES \n");
 	for _, loc := range sbLocations {
 		if loc.Country == "US" {
-			fmt.Println(loc.Sql())
+			fmt.Fprintf(&b, "%s,", loc.Sql())
 		}
 	}
-
+	b.Truncate(b.Len()-1)
+	fmt.Fprintf(&b, ";\n")
+	b.WriteTo(os.Stdout)
 	return 0
 }
 

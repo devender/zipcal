@@ -46,14 +46,14 @@ func (l *Location) String() string {
 
 func (l *Location) Sql() string {
 	return fmt.Sprintf("('%s', '%s', '%s', '%s', " +
-		"'%s', '%s', '%s', '%s', '%s', %v, %v, '[\"test\", \"test1\" ]' ),",
-		escape(l.Name), l.Brand, escape(l.Address1), escape(l.Address2), escape(l.City), l.SubDivision, l.PostalCode, l.Country,
+		" '%s', '%s', '%s', '%s', '%s', %v, %v, '[\"test\", \"test1\" ]' )",
+		l.Name, l.Brand, l.Address1, l.Address2, l.City, l.SubDivision, l.PostalCode, l.Country,
 		l.PhoneNumber,
 		l.Point.Latitude, l.Point.Longitude)
 }
 
 func escape(s string) string {
-	return strings.Replace(s, "'", "\\'",-1)
+	return strings.Replace(s, "'", "''",-1)
 }
 
 func (p1 Point) HaverSineDistance(p2 Point) float64 {
