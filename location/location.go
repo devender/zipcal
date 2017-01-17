@@ -43,11 +43,10 @@ func (l *Location) String() string {
 }
 
 func (l *Location) Sql() string {
-	metadata := "{" +
-		"\"locationType\": [\"payment\", \"payout\"]," +
-		"\"services\": [\"moneygram_payout\", \"moneygram_billpay\"]," +
-		"\"canPayoutHighValue\": false "+
-		"}"
+	metadata := "[ " +
+		"{\"key\":\"locationType\", \"value\":[\"payment\", \"payout\"]}, " +
+		"{\"key\":\"services\",\"value\":[\"moneygram_payout\", \"moneygram_billpay\"]}, " +
+		"{\"key\": \"canPayoutHighValue\" ,\"value\": false}]"
 
 	return fmt.Sprintf("("+
 		"'%s', "+ //name
