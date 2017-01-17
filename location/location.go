@@ -37,23 +37,42 @@ type Location struct {
 }
 
 func (l *Location) String() string {
-	return fmt.Sprintf("{ name=%s, brand=%s, address1=%s, address2=%s, " +
-		"city=%s, state=%s, postal=%s, country=%s, phone=%s, lat=%v, log=%v}",
+	return fmt.Sprintf("{ name=%s, brand=%s, address1=%s, address2=%s, "+"city=%s, state=%s, postal=%s, country=%s, phone=%s, lat=%v, log=%v}",
 		l.Name, l.Brand, l.Address1, l.Address2, l.City, l.SubDivision, l.PostalCode, l.Country,
-		l.PhoneNumber,
 		l.Point.Latitude, l.Point.Longitude)
 }
 
 func (l *Location) Sql() string {
-	return fmt.Sprintf("('%s', '%s', '%s', '%s', " +
-		" '%s', '%s', '%s', '%s', '%s', %v, %v, '[\"test\", \"test1\" ]' )",
-		l.Name, l.Brand, l.Address1, l.Address2, l.City, l.SubDivision, l.PostalCode, l.Country,
-		l.PhoneNumber,
-		l.Point.Latitude, l.Point.Longitude)
+	metadata := "{" +
+		"\"locationType\": [\"payment\", \"payout\"]," +
+		"\"services\": [\"moneygram_payout\", \"moneygram_billpay\"]," +
+		"\"canPayoutHighValue\": false "+
+		"}"
+
+	return fmt.Sprintf("("+
+		"'%s', "+ //name
+		"'%s', "+ //address1
+		"'%s', "+ //city
+		"'%s', "+ //state
+		"'%s', "+ //postalcode
+		"'%s',"+ //Country
+		"'%f',"+ //lat
+		"'%f', "+ //lon
+		"'%s' ,"+ //metadata
+		"true )", //enabled
+		escape(l.Name),
+		escape(l.Address1),
+		escape(l.City),
+		escape(l.SubDivision),
+		escape(l.PostalCode),
+		"US",
+		l.Latitude,
+		l.Longitude,
+		metadata)
 }
 
 func escape(s string) string {
-	return strings.Replace(s, "'", "''",-1)
+	return strings.Replace(s, "'", "''", -1)
 }
 
 func (p1 Point) HaverSineDistance(p2 Point) float64 {
@@ -69,10 +88,7 @@ func (p1 Point) HaverSineDistance(p2 Point) float64 {
 
 	sindLat := math.Sin(dLat / 2);
 	sindLng := math.Sin(dLng / 2);
-
-	a := math.Pow(sindLat, 2) + math.Pow(sindLng, 2) * math.Cos(lat1) * math.Cos(lat2);
-
+	a := math.Pow(sindLat, 2) + math.Pow(sindLng, 2)*math.Cos(lat1)*math.Cos(lat2);
 	c := 2 * math.Atan2(math.Sqrt(a), math.Sqrt(1 - a));
-
 	return EARTH_RADIUS * c
 }

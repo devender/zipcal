@@ -39,10 +39,10 @@ func realMain() int {
 	}
 	*/
 	var b bytes.Buffer
-	fmt.Fprintf(&b, "INSERT INTO insikt.geolocation_location (name,brand,address1,address2,city,state,postal_code,country,phone_no,latitude,longitude,tags) VALUES \n");
+	fmt.Fprintf(&b, "INSERT INTO insikt.geolocation_location (name,address1,city,state,postal_code,country,latitude,longitude,metadata,enabled) VALUES \n");
 	for _, loc := range sbLocations {
 		if loc.Country == "US" {
-			fmt.Fprintf(&b, "%s,", loc.Sql())
+			fmt.Fprintf(&b, "%s\n,", loc.Sql())
 		}
 	}
 	b.Truncate(b.Len()-1)
