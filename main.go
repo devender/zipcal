@@ -17,7 +17,7 @@ func main() {
 }
 
 func loadStarbucksLocations() []location.Location {
-	sb := loader.Starbucks{Source: "/Users/dgollapally/Downloads/data/starbucks.csv"}
+	sb := loader.Starbucks{Source: "./resources/starbucks.csv"}
 	return sb.Load()
 }
 

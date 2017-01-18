@@ -22,8 +22,6 @@ _testmain.go
 *.exe
 *.test
 *.prof
-<<<<<<< 968ab402f9ffc7c505549d7f186ad720b6fe1df5
-=======
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
@@ -33,4 +31,5 @@ vendor/
 
 .idea/
 *.iml
->>>>>>> first
+starbucks.csv
+zipcal
