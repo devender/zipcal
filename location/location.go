@@ -33,6 +33,7 @@ type Location struct {
 	Country     string
 	PostalCode  string
 	Brand       string
+	Metadata    string
 	Point
 }
 
@@ -43,22 +44,14 @@ func (l *Location) String() string {
 }
 
 func (l *Location) Sql() string {
-	metadata := "[ " +
-		"{\"key\":\"locationType\", \"value\":[\"payment\", \"payout\"]}, " +
-		"{\"key\":\"services\",\"value\":[\"moneygram_payout\", \"moneygram_billpay\"]}, " +
-		"{\"key\": \"canPayoutHighValue\" ,\"value\": false}]"
+	if l.Metadata == "" {
+		l.Metadata = "[ " +
+			"{\"key\":\"locationType\", \"value\":[\"payment\", \"payout\"]}, " +
+			"{\"key\":\"services\",\"value\":[\"moneygram_payout\", \"moneygram_billpay\"]}, " +
+			"{\"key\": \"canPayoutHighValue\" ,\"value\": \"false\" } ]"
+	}
 
-	return fmt.Sprintf("("+
-		"'%s', "+ //name
-		"'%s', "+ //address1
-		"'%s', "+ //city
-		"'%s', "+ //state
-		"'%s', "+ //postalcode
-		"'%s',"+ //Country
-		"'%f',"+ //lat
-		"'%f', "+ //lon
-		"'%s' ,"+ //metadata
-		"true )", //enabled
+	return fmt.Sprintf("('%s', '%s', '%s', '%s', '%s', '%s','%f','%f', '%s' , true )", //enabled
 		escape(l.Name),
 		escape(l.Address1),
 		escape(l.City),
@@ -67,7 +60,7 @@ func (l *Location) Sql() string {
 		"US",
 		l.Latitude,
 		l.Longitude,
-		metadata)
+		l.Metadata)
 }
 
 func escape(s string) string {
