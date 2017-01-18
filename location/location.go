@@ -3,7 +3,6 @@ package location
 import (
 	"math"
 	"fmt"
-	"strings"
 )
 
 const (
@@ -41,30 +40,6 @@ func (l *Location) String() string {
 	return fmt.Sprintf("{ name=%s, brand=%s, address1=%s, address2=%s, "+"city=%s, state=%s, postal=%s, country=%s, phone=%s, lat=%v, log=%v}",
 		l.Name, l.Brand, l.Address1, l.Address2, l.City, l.SubDivision, l.PostalCode, l.Country,
 		l.Point.Latitude, l.Point.Longitude)
-}
-
-func (l *Location) Sql() string {
-	if l.Metadata == "" {
-		l.Metadata = "[ " +
-			"{\"key\":\"locationType\", \"value\":[\"payment\", \"payout\"]}, " +
-			"{\"key\":\"services\",\"value\":[\"moneygram_payout\", \"moneygram_billpay\"]}, " +
-			"{\"key\": \"canPayoutHighValue\" ,\"value\": \"false\" } ]"
-	}
-
-	return fmt.Sprintf("('%s', '%s', '%s', '%s', '%s', '%s','%f','%f', '%s' , true )", //enabled
-		escape(l.Name),
-		escape(l.Address1),
-		escape(l.City),
-		escape(l.SubDivision),
-		escape(l.PostalCode),
-		"US",
-		l.Latitude,
-		l.Longitude,
-		l.Metadata)
-}
-
-func escape(s string) string {
-	return strings.Replace(s, "'", "''", -1)
 }
 
 func (p1 Point) HaverSineDistance(p2 Point) float64 {
